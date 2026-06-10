@@ -8,3 +8,34 @@ ORDER BY/ GROUP BY ASC, DESC
 HAVING AVG/MIN/MAX/SUM/
 LIMIT
 UNION ALL / UNION DISTINCT
+# UNION ALL
+Stacks all rows from two or more queries on top of each other.
+Every row is included, even if duplicates exist across the queries.
+Fastest set operator — no deduplication step.
+-- example
+SELECT column_1,
+       column_2
+FROM table_a
+UNION ALL
+SELECT column_1,
+       column_2
+FROM table_b;
+
+# UNION DISTINCT
+Stacks rows from two or more queries, like UNION ALL.
+Removes duplicate rows from the result.
+Use when the same row may appear across tables and each unique row should appear only once.
+Slower than UNION ALL because of the deduplication step.
+SELECT column_1,
+       column_2
+FROM table_a
+UNION DISTINCT
+SELECT column_1,
+       column_2
+FROM table_b;
+
+## Column Compatibility
+All SELECT statements in a set operator must return the same number of columns.
+Columns must have compatible data types in the same order.
+Column names do not need to match — the result uses names from the first SELECT.
+Mismatched counts or incompatible types produce an error.
