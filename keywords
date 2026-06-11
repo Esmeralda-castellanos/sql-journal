@@ -39,3 +39,17 @@ All SELECT statements in a set operator must return the same number of columns.
 Columns must have compatible data types in the same order.
 Column names do not need to match — the result uses names from the first SELECT.
 Mismatched counts or incompatible types produce an error.
+
+-- Select fields with aliases
+SELECT c.code AS country_code, name, year, inflation_rate
+FROM countries AS c
+-- Join to economies (alias e)
+INNER JOIN economies AS e
+-- Match on code field using table aliases
+ON c.code = e.code;
+
+SELECT c.name AS country, l.name AS language, official
+FROM countries AS c
+INNER JOIN languages AS l
+-- Match using the code column
+USING (code);
