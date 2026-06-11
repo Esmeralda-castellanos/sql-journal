@@ -59,3 +59,8 @@ FROM countries AS c
 INNER JOIN languages AS l
 USING(code)
 WHERE l.name = 'Bhojpuri';
+
+SELECT *
+FROM table1
+INNER JOIN table2 ON table1.id = table2.id
+INNER JOIN table3 ON table2.other_id = table3.id;
