@@ -53,3 +53,9 @@ FROM countries AS c
 INNER JOIN languages AS l
 -- Match using the code column
 USING (code);
+
+SELECT c.name AS country, l.name AS language
+FROM countries AS c
+INNER JOIN languages AS l
+USING(code)
+WHERE l.name = 'Bhojpuri';
