@@ -64,3 +64,12 @@ SELECT *
 FROM table1
 INNER JOIN table2 ON table1.id = table2.id
 INNER JOIN table3 ON table2.other_id = table3.id;
+
+--example 
+-- Select fields
+SELECT name, e.year, fertility_rate, unemployment_rate
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code
+-- Join to economies (as e) match code
+INNER JOIN economies AS e ON e.code = c.code;
