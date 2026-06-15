@@ -153,3 +153,11 @@ FROM matches_2013_2014
 WHERE (home_goal + away_goal) > 
        (SELECT 3 * AVG(home_goal + away_goal)
         FROM matches_2013_2014); 
+
+-- filter for excluding values example: Exclude all values from the subquery
+SELECT 
+	team_long_name,
+	team_short_name
+FROM team
+WHERE team_api_id NOT IN
+     (SELECT DISTINCT hometeam_id  FROM match);
