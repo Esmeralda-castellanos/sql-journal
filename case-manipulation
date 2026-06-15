@@ -48,3 +48,53 @@ WHERE
         WHEN awayteam_id = 9857 AND away_goal > home_goal THEN 'Bologna Win' 
         -- Exclude games not won by Bologna
 		END IS NOT NULL;
+
+-- case when with sum
+SELECT 
+	season,
+	SUM(CASE WHEN hometeam_id = 8650
+			THEN home_goal END) AS home_goals,
+	SUM(CASE WHEN awayteam_id = 8650
+			THEN away_goal END) AS away_goals
+FROM match
+GROUP BY season;
+
+-- case when with avg
+SELECT
+	season,
+	AVG(CASE WHEN hometeam_id = 8650
+			THEN home_goal END) AS avg_homegoals,
+	AVG(CASE WHEN awayteam_id = 8650
+			THEN away_goal END) AS avg_awaygoals
+FROM match
+GROUP BY season;
+
+-- round and avg
+SELECT
+	season,
+	ROUND(AVG(CASE WHEN hometeam_id = 8650
+			THEN home_goal END),2) AS avg_homegoals,
+	ROUND(AVG(CASE WHEN awayteam_id = 8650
+			THEN away_goal END),2) AS avg_awaygoals
+FROM match
+GROUP BY season;
+
+-- Percentages % structure with CASEA and AVG
+SELECT
+	season,
+	AVG(CASE WHEN hometeam_id = 8455 AND home_goal < away_goal THEN 1
+			 WHEN hometeam_id = 8455 AND homegoal < away_goal THEN 0 END) AS pct_homewins,
+	AVG(CASE WHEN awayteam_id = 8455 AND home_goal < away_goal THEN 1
+			 WHEN awayteam_id = 8455 AND homegoal < away_goal THEN 0 END) AS pct_awaywins
+FROM match
+GROUP BY season;
+
+-- ROUNDED Percentages % structure with CASEA and AVG
+SELECT
+	season,
+	ROUND(AVG(CASE WHEN hometeam_id = 8455 AND home_goal < away_goal THEN 1
+			 WHEN hometeam_id = 8455 AND homegoal < away_goal THEN 0 END),2) AS pct_homewins,
+	ROUND(AVG(CASE WHEN awayteam_id = 8455 AND home_goal < away_goal THEN 1
+			 WHEN awayteam_id = 8455 AND homegoal < away_goal THEN 0 END),2) AS pct_awaywins
+FROM match
+GROUP BY season;
