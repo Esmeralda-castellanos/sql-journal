@@ -143,3 +143,13 @@ WHERE
 	(SELECT hometeam_id
 	FROM match
 	WHERE country_id = 15722);
+
+-- filter example: Filter for matches where total goals is greater than 3x the average
+SELECT 
+    date,
+	home_goal,
+	away_goal
+FROM matches_2013_2014
+WHERE (home_goal + away_goal) > 
+       (SELECT 3 * AVG(home_goal + away_goal)
+        FROM matches_2013_2014); 
