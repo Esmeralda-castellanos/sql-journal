@@ -73,3 +73,14 @@ INNER JOIN populations AS p
 ON c.code = p.country_code
 -- Join to economies (as e) match code
 INNER JOIN economies AS e ON e.code = c.code;
+
+-- Select local_name and lang_num from appropriate tables
+SELECT local_name, lang_num
+FROM countries,
+  (SELECT code, COUNT(*) AS lang_num
+  FROM languages
+  GROUP BY code) AS sub
+-- Where codes match
+WHERE countries.code = sub.code
+ORDER BY lang_num DESC;
+
