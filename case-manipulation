@@ -161,3 +161,13 @@ SELECT
 FROM team
 WHERE team_api_id NOT IN
      (SELECT DISTINCT hometeam_id  FROM match);
+
+-- FROM subquery
+SELECT
+	t.team_long_name AS team,
+	AVG(m.home_goal) AS home_avg
+FROM match AS m
+LEFT JOIN teams AS t
+ON m.hometeam_id = t.team_api_id
+WHERE season = '2011/2012'
+GROUP BY team;
