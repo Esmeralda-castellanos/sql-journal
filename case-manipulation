@@ -171,3 +171,16 @@ LEFT JOIN teams AS t
 ON m.hometeam_id = t.team_api_id
 WHERE season = '2011/2012'
 GROUP BY team;
+
+--- FROM to main queries
+SELECT team, home_avg
+FROM ( SELECT 
+			t.team_long_name AS team,
+			AVG(m.home_goal) AS home_avg
+		FROM match AS m
+		LEFT JOIN teams AS t
+		ON m.hometeam_id = t.team_api_id
+		WHERE season = '2011/2012'
+		GROUP BY team) AS subquery
+ORDER BY home_avg DESC
+LIMIT 3;
