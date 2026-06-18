@@ -249,3 +249,48 @@ ON l.country_id = m.country_id
 -- Only include 2013/2014 results
 WHERE season = '2013/2014'
 GROUP BY l.name;
+
+/* Another way of writing comments on SQL is using 
+the asterisk and slash because it allows you to write
+on multiple lines */
+SELECT
+    date,
+    hometeam_id,
+    awayteam_id,
+    CASE
+        WHEN hometeam_id = 8455 AND home_goal > away_goal THEN 'Chelsea home win'
+        WHEN awayteam_id = 8455 AND home_goal < away_goal THEN 'Chelsea away win'
+        WHEN hometeam_id = 8455 AND home_goal < away_goal THEN 'Chelsea home loss'
+        WHEN awayteam_id = 8455 AND home_goal > away_goal THEN 'Chelsea away loss'
+        WHEN (hometeam_id = 8455 OR awayteam_id = 8455) AND home_goal = away_goal THEN 'Chelsea tie'
+    END AS outcome
+FROM match
+WHERE hometeam_id = 8455 OR awayteam_id = 8455;
+
+/* This query finds stages in the 2013/2014 season where the average total goals per match
+   is higher than the overall season average.
+
+   Step 1: The inner subquery groups matches by stage and calculates the average total goals
+   for each stage.
+   Step 2: The outer query selects each stage and rounds that stage average to 2 decimals.
+   Step 3: Another subquery calculates the overall average goals for the whole 2013/2014 season.
+   Step 4: The WHERE clause keeps only the stages whose average goals are greater than the
+   overall season average.
+*/
+SELECT
+    s.stage,
+    ROUND(s.avg_goals, 2) AS avg_goal,
+    (SELECT AVG(home_goal + away_goal)
+     FROM match
+     WHERE season = '2013/2014') AS overall_avg
+FROM
+    (SELECT
+         stage,
+         AVG(home_goal + away_goal) AS avg_goals
+     FROM match
+     WHERE season = '2013/2014'
+     GROUP BY stage) AS s
+WHERE
+    s.avg_goals > (SELECT AVG(home_goal + away_goal)
+                   FROM match
+                   WHERE season = '2013/2014');
